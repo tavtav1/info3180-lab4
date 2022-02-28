@@ -1,3 +1,28 @@
 body {
     padding-top: 5rem;
 }
+
+.imgflex{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px 20px;
+
+}
+
+.imgflex .li{
+    order: 3;
+
+
+}
+
+ img{
+    display: block;
+    max-width:400px;
+    max-height:400px;
+    width: auto;
+    height: auto;
+ }
+
+ul{
+    list-style-type: none;
+}

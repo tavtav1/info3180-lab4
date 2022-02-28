@@ -6,7 +6,7 @@ This file creates your application.
 """
 import os
 from app import app
-from flask import render_template, request, redirect, url_for, flash, session, abort
+from flask import render_template, request, redirect, url_for, flash, session, abort, send_from_directory
 from werkzeug.utils import secure_filename
 from .forms import UploadForm
 
@@ -42,7 +42,7 @@ def upload():
         # Get file data and save to your uploads folder
 
         image = request.files["file"]
-        filename = secure_filename(image.filename)
+        #filename = secure_filename(image.filename)
 
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(image.filename))
         image.save(file_path)
@@ -52,6 +52,29 @@ def upload():
 
     return render_template('upload.html', form=form)
 
+def get_uploaded_images():
+#  print os.path.join(subdir, file)
+    newfiles =[]
+    rootdir = os.getcwd()
+    for subdir, dirs, files in os.walk(rootdir + "/uploads"):
+        for file in files:
+            #print (os.path.join(subdir, file))
+            if file.endswith(('png', 'jpg')):
+                newfiles.append(file)
+        return newfiles
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
+
+@app.route('/files')
+def files():
+    if not session.get('logged_in'):
+        abort(401)
+        
+    imagelst = get_uploaded_images()
+
+    return render_template('files.html', imagelst = imagelst)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():

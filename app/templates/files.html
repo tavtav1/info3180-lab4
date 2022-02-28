@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	{% extends 'base.html' %}
+	{% block main %}
+
+	<ul class = "imgflex">
+		{% for x in imagelst: %}
+
+		<li> <img src="{{url_for('get_image', filename = x)}}"></li>
+		
+		{% endfor %}
+
+	</ul>
+
+	{% endblock %}
+
+</body>
+</html>
